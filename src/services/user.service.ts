@@ -103,6 +103,20 @@ const getUserByPhone = async (phone: string) => {
     return { ...user };
 };
 
+const updateUserScore = async (userId: string, score: number) => {
+    const user = await User.findOneAndUpdate(
+        { _id: userId },
+        { score },
+        { new: true }
+    );
+
+    if (!user) {
+        throw new HttpError({ code: 404, message: 'User not found!' });
+    }
+
+    return user.toObject();
+};
+
 const getUserByEmailOrPhone = async (email: string, phone: string) => {
     const userDoc = await User.findOne({
         $or: [{ email }, { phone }],
@@ -126,6 +140,7 @@ export default {
     getUserById,
     createUser,
     getUserByEmail,
+    updateUserScore,
     getUsersByIds,
     getUserByPhone,
     getUserByEmailOrPhone,

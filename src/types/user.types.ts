@@ -37,9 +37,10 @@ export interface IPost {
     ownerId: string | ObjectId;
     title: string;
     content: string;
+    password: string;
     isLocked: boolean;
     visibleTo: IMention[];
-    images: IPostImage[];
+    images: PopulatedDoc<IImage>[];
     comments: IPostComment[] | [];
 }
 

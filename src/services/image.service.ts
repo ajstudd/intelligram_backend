@@ -1,5 +1,6 @@
 import ImageModel from '@/models/image.model';
-import { ICommentGroup } from '@/types';
+import postModel from '@/models/post.model';
+import { IComment } from '@/types';
 
 const saveImage = async ({
     filename,
@@ -11,25 +12,18 @@ const saveImage = async ({
     const image = await ImageModel.create({
         image: filename,
         localPath,
-        commentGroups: [],
     });
     return image.toObject();
 };
 
-const applyComments = async (
-    imageId: string,
-    commentGroups: ICommentGroup[]
-) => {
-    const image = await ImageModel.findOneAndUpdate(
+const applyComments = async (comment: IComment) => {
+    const image = await postModel.findOneAndUpdate(
         {
-            _id: imageId,
+            _id: comment.postid,
         },
         {
             $set: {
-                commentGroups: commentGroups.map((cg) => {
-                    const { id, ...group } = cg;
-                    return group;
-                }),
+                comments: comment,
             },
         },
         {

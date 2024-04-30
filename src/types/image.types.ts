@@ -1,18 +1,14 @@
 export interface IComment {
-    type: 'text' | 'image';
+    ownerId: string;
+    postid: string;
     content: string;
+    images: string[];
+    _id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
-
-export interface ICommentGroup {
-    id: string;
-    x: number;
-    y: number;
-    comments: IComment[];
-}
-
 export interface IImage {
     image: string;
     localPath: string;
     _id?: string;
-    commentGroups: ICommentGroup[];
 }

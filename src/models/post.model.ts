@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IPost, IComment } from '@/types';
-import { boolean } from 'joi';
+import { IPost } from '@/types';
 
 const PostSchema = new Schema<IPost>(
     {
@@ -26,6 +25,12 @@ const PostSchema = new Schema<IPost>(
             required: true,
             trim: true,
         },
+        password: {
+            type: String,
+            required: false,
+            trim: true,
+            select: false,
+        },
         visibleTo: [
             {
                 name: {
@@ -42,16 +47,9 @@ const PostSchema = new Schema<IPost>(
         ],
         images: [
             {
-                url: {
-                    type: String,
-                    required: true,
-                    trim: true,
-                },
-                alt: {
-                    type: String,
-                    required: true,
-                    trim: true,
-                },
+                type: Schema.Types.ObjectId,
+                ref: 'IImage',
+                required: true,
             },
         ],
         ownerId: {
@@ -74,4 +72,4 @@ const PostSchema = new Schema<IPost>(
     }
 );
 
-export default model<IPost>('Post', PostSchema, 'post');
+export default model<IPost>('Post', PostSchema, 'posts');
