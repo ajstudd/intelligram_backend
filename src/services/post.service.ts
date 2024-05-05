@@ -30,8 +30,10 @@ const applyComments = async (comment: IComment) => {
 };
 
 const getPostImageWithPassword = async (postId: string, password: string) => {
-    const post = await postModel.findById(postId);
-    console.log('post', post);
+    const post = await postModel
+        .findById(postId)
+        .populate('images')
+        .populate('user');
     if (!post) {
         return null;
     }
@@ -43,7 +45,10 @@ const getPostImageWithPassword = async (postId: string, password: string) => {
     if (!isMatch) {
         return null;
     }
-    return post;
+    return {
+        ...post.toJSON(),
+        password: undefined,
+    };
 };
 
 export const getPostById = async (postId: string) => {
@@ -58,7 +63,10 @@ export const getPostByIdWithPassword = async (
     postId: string,
     password: string
 ) => {
-    const post = await postModel.findById(postId);
+    const post = await postModel
+        .findById(postId)
+        .populate('images')
+        .populate('user');
     if (!post) {
         return null;
     }
@@ -66,7 +74,10 @@ export const getPostByIdWithPassword = async (
     if (!isMatch) {
         return null;
     }
-    return post;
+    return {
+        ...post.toJSON(),
+        password: undefined,
+    };
 };
 
 export const getOnlyMyPosts = async (userId: string) => {
