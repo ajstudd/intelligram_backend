@@ -16,7 +16,7 @@ export const getOnlyMyPosts = async (req: Request, res: Response) => {
     const user = req.user;
     const posts = await postService.getOnlyMyPosts(user ? user.id : '');
     return res.json({ posts });
-}
+};
 
 export const getAllPosts = async (req: Request, res: Response) => {
     const user = req.user;

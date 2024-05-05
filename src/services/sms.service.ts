@@ -1,11 +1,10 @@
-import { OrderQuote } from '@/types';
 import { sendMessage } from '@/utils/sendMessage';
 
 const sendOtpSms = async (phone: string, otp: string) => {
     return await sendMessage(`Your OTP is: ${otp}`, phone);
 };
 
-const sendQuoteSms = async (phone: string, data: OrderQuote) => {
+const sendQuoteSms = async (phone: string, data: any) => {
     try {
         const message = `
         Order review details:

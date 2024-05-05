@@ -1,11 +1,9 @@
-import { LocalStorageKeys } from '@/configs';
-
 /**
  * @description returns token if exists else returns empty string
  */
 export const getToken = () => {
     let token = '';
-    const headerData = localStorage.getItem(LocalStorageKeys.TOKEN);
+    const headerData = localStorage.getItem('token');
     if (headerData) {
         token = headerData;
     }
