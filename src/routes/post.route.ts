@@ -7,14 +7,20 @@ const router = Router();
 
 router.post(
     '/create',
-    // verifyToken({ strict: true }),
+    verifyToken({ strict: true }),
     catchAsync(postController.createPost)
 );
 
 router.get(
     '/all',
-    // verifyToken({ strict: true }),
+    verifyToken({ strict: true }),
     catchAsync(postController.getAllPosts)
+);
+
+router.post(
+    '/image',
+    // verifyToken({ strict: true }),
+    catchAsync(postController.getPostImageWithPassword)
 );
 
 router.get(

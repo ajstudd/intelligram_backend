@@ -31,7 +31,12 @@ const applyComments = async (comment: IComment) => {
 
 const getPostImageWithPassword = async (postId: string, password: string) => {
     const post = await postModel.findById(postId);
+    console.log('post', post);
     if (!post) {
+        return null;
+    }
+    if (typeof post.password === 'undefined') {
+        console.error('Post password is undefined');
         return null;
     }
     const isMatch = await bcrypt.compare(password, post.password);
@@ -42,18 +47,50 @@ const getPostImageWithPassword = async (postId: string, password: string) => {
 };
 
 export const getPostById = async (postId: string) => {
-    const post = await postModel.findById(postId);
+    const post = await postModel.findById(postId).select('-password');
     if (post?.isLocked) {
         post.images = [];
     }
     return post;
 };
 
-export const getAllPosts = async () => {
-    const posts = await postModel.find();
+export const getPostByIdWithPassword = async (
+    postId: string,
+    password: string
+) => {
+    const post = await postModel.findById(postId);
+    if (!post) {
+        return null;
+    }
+    const isMatch = await bcrypt.compare(password, post.password);
+    if (!isMatch) {
+        return null;
+    }
+    return post;
+};
+
+export const getOnlyMyPosts = async (userId: string) => {
+    const posts = await postModel
+        .find({ ownerId: userId })
+        .populate('images')
+        .select('-password')
+        .sort({ createdAt: -1 });
+    return posts;
+};
+
+export const getAllPosts = async (userId?: string) => {
+    const posts = await postModel
+        .find()
+        .populate('images')
+        .populate('user')
+        .select('-password')
+        .sort({ createdAt: -1 });
     posts.map((post) => {
-        if (post.isLocked) {
+        if (post.isLocked && post.user?.id !== userId) {
             post.images = [];
+        }
+        if (post.isLocked && post.user?.id === userId) {
+            post.isLocked = false;
         }
     });
     return posts;
@@ -62,6 +99,7 @@ export const getAllPosts = async () => {
 export default {
     createPost,
     applyComments,
+    getOnlyMyPosts,
     getPostById,
     getPostImageWithPassword,
     getAllPosts,

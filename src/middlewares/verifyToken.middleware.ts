@@ -66,7 +66,10 @@ export const verifyToken = (
 
             req.user = {
                 id: user._id.toString(),
-                role: user.role,
+                email: user.email,
+                name: user.name,
+                phone: user.phone,
+                password: user.password || '',
             };
             return next();
         } catch (err) {

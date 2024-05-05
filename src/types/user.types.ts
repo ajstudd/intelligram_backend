@@ -41,12 +41,16 @@ export interface IPost {
     isLocked: boolean;
     visibleTo: IMention[];
     images: PopulatedDoc<IImage>[];
+    user: PopulatedDoc<IUser>;
     comments: IPostComment[] | [];
 }
 
 export interface IRequestUser {
     id: string;
-    role: 'ADMIN' | 'USER';
+    email: string;
+    phone: string;
+    name: string;
+    password: string;
 }
 
 export type RegisterUserPayload = Pick<

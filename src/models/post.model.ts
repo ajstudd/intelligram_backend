@@ -20,16 +20,10 @@ const PostSchema = new Schema<IPost>(
             required: true,
             default: false,
         },
-        title: {
-            type: String,
-            required: true,
-            trim: true,
-        },
         password: {
             type: String,
             required: false,
             trim: true,
-            select: false,
         },
         visibleTo: [
             {
@@ -52,10 +46,10 @@ const PostSchema = new Schema<IPost>(
                 required: true,
             },
         ],
-        ownerId: {
-            type: String,
-            required: false,
-            trim: true,
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
         },
     },
     {
